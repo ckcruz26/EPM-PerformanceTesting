@@ -10,7 +10,7 @@ export const options = {
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(90)', 'p(95)', 'p(99)'],
   thresholds: {
     http_req_failed: ["rate<0.01"],
-    http_req_duration: ['p(95)<2000'], // adjust if needed
+    http_req_duration: ['p(99)<2000'], // adjust if needed
     // Optional: add per-group thresholds if using `group()`
   },
 };
@@ -37,6 +37,7 @@ export default function main() {
     check(response, {
       "login status is 200": (r) => r.status === 200,
       "login response time < 500ms": (r) => r.timings.duration < 500,
+
       "successfully logged in": (r) =>  r.body && r.body.includes("Account Unlocked!"),
     });
 
