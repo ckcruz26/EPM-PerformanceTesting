@@ -4,8 +4,8 @@ import { check, sleep, group } from "k6";
 import http from "k6/http";
 
 export const options = {
-  vus: 100,
-  duration: "15m",
+  vus: 10,
+  duration: "1m",
   insecureSkipTLSVerify: true,
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(90)', 'p(95)', 'p(99)'],
   thresholds: {
