@@ -1,0 +1,42 @@
+import http from 'k6/http';
+import { check } from 'k6';
+
+export let options = {
+  vus: 5,
+  duration: '10s',
+};
+
+export default function () {
+  const payload = {
+    username: '12456',
+    password: 'P@ssword',
+  };
+
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  // Step 1: Send login request
+  let loginRes = http.post('https://172.31.32.64/registration/', payload, { headers });
+
+  check(loginRes, {
+    'login status is 200 or 302': (r) => r.status === 200 || r.status === 302,
+  });
+
+  // Step 2: Get cookies if needed
+  const cookies = loginRes.cookies;
+
+  // Step 3: Visit home page
+  let homeRes = http.get('https://172.31.32.64/registration/homePage.php', {
+    headers: {
+      Cookie: `session=${cookies?.session ? cookies.session[0].value : ''}`,
+    },
+  });
+
+  // Step 4: Validate content only if body exists
+  check(homeRes, {
+    'home page response body exists': (r) => !!r.body,
+    "title exists in body": (r) =>
+      r.body && r.body.includes("<title>Home Page - Employee's Registration Module</title>"),
+  });
+}
