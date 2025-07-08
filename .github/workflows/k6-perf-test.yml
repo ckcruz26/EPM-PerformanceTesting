@@ -22,4 +22,4 @@ jobs:
           sudo apt install -y k6
 
       - name: Run the test
-        run: k6 run --summary-export=result.json  epm-performance-testing.ts
+        run: k6 run epm-performance-testing.ts
