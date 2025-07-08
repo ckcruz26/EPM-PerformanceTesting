@@ -37,7 +37,7 @@ export default function main() {
     check(response, {
       "login status is 200": (r) => r.status === 200,
       "login response time < 500ms": (r) => r.timings.duration < 500,
-      "successfully logged in": (r) => r.body.includes("Account Unlocked!"),
+      "successfully logged in": (r) =>  r.body && r.body.includes("Account Unlocked!"),
     });
 
     sleep(3.2);
